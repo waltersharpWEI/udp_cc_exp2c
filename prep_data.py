@@ -50,6 +50,27 @@ def diff_loss(loss):
     diff.append(0)
     return np.array(diff)
 
+def prep_txt(raw_path, clean_path):
+    losss = []
+    delays = []
+    ths = []
+    with open(raw_path,'r') as f1:
+        for line in f1.readlines():
+            tokens = line.split()
+            sub_tokens = tokens[10].split('/')
+            loss = float(sub_tokens[0])/float(sub_tokens[1])
+            th = float(tokens[6]) * 10000
+            delay = 55
+            losss.append(loss)
+            delays.append(delay)
+            ths.append(th)
+    delays = np.array(delays)
+    losss = np.array(losss)
+    ths = np.array(ths)
+    df = pd.DataFrame({'th': ths, 'delay': delays, 'loss': losss})
+    df.to_csv(clean_path, index=False)
+    return
+
 def prep_raw(raw_path, clean_path):
     trim_head(raw_path,raw_path)
     th1 = pull_th1(raw_path)
