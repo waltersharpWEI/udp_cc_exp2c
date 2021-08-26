@@ -4,6 +4,7 @@ import os
 import prep_data
 import compute_qoe
 import qoe_cdf
+import algo
 from configs import raw_root,clean_root,qoe_root,pdf_root
 import os.path
 def file_extension(path):
@@ -14,6 +15,7 @@ if __name__=="__main__":
     #The list of traces, must be the same as .csv filename
     lid_list = ["default","iperf_log"]
     txt_list = set(["iperf_log"])
+    path_list = []
     fig_name = "propagation_delay_mot.pdf"
     fig_path = os.path.join(pdf_root,fig_name)
     for lid in lid_list:
@@ -32,5 +34,9 @@ if __name__=="__main__":
         qoe_path = os.path.join(qoe_root,lid+ext)
         #compute the qoe given standard format qos log
         compute_qoe.compute_qoe(clean_path,qoe_path)
+        path_list.append(qoe_path)
     #draw the qoe cdf
-    qoe_cdf.plot_qoe_cdf(lid_list,fig_path)
+    max_path = os.path.join(qoe_root,"max.csv")
+    algo.max_qoe(path_list[0],path_list[1],max_path)
+    n_lid_list = ["default", "max"]
+    qoe_cdf.plot_qoe_cdf(n_lid_list,fig_path)

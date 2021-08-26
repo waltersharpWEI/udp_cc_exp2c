@@ -13,7 +13,7 @@ def compute_cdf(qoes,bins):
     cdf = np.cumsum(pdf)
     return cdf,bins_count[1:]
 
-def plot_qoe_cdf(lid_list):
+def plot_qoe_cdf(lid_list,fig_path):
     for lid in lid_list:
         ext=".csv"
         qoe_path = os.path.join(qoe_root, lid + ext)
@@ -21,6 +21,8 @@ def plot_qoe_cdf(lid_list):
         qoes = np.array(df["qoe"])
         cdf,bins = compute_cdf(qoes,100)
         plt.plot(bins,cdf,label=lid)
+    plt.xlim(2,12)
     plt.legend()
+    plt.savefig(fig_path)
     plt.show()
     return
