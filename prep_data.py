@@ -4,7 +4,8 @@
 #process the raw log data
 import pandas as pd
 import numpy as np
-import os
+from aws_db import put_item
+from configs import exp_id
 
 #trim the meaningless data at the start
 #of exp, and save the file to path_out
@@ -50,7 +51,7 @@ def diff_loss(loss):
     diff.append(0)
     return np.array(diff)
 
-def prep_txt(raw_path, clean_path):
+def prep_txt(raw_path, clean_path,lid,upload=False):
     losss = []
     delays = []
     ths = []
@@ -59,7 +60,9 @@ def prep_txt(raw_path, clean_path):
             tokens = line.split()
             sub_tokens = tokens[10].split('/')
             loss = float(sub_tokens[0])/float(sub_tokens[1])
+            loss = int(loss * 100)
             th = float(tokens[6]) * 10000
+            th = int(th)
             delay = 55
             losss.append(loss)
             delays.append(delay)
@@ -69,9 +72,13 @@ def prep_txt(raw_path, clean_path):
     ths = np.array(ths)
     df = pd.DataFrame({'th': ths, 'delay': delays, 'loss': losss})
     df.to_csv(clean_path, index=False)
+    if upload:
+        print("upload to aws db")
+        put_item(exp_id,lid,ths,delays,losss)
+        print("finished uploading")
     return
 
-def prep_raw(raw_path, clean_path):
+def prep_raw(raw_path, clean_path,lid, upload=False):
     trim_head(raw_path,raw_path)
     th1 = pull_th1(raw_path)
     delay1 = pull_delay(raw_path)
@@ -79,6 +86,10 @@ def prep_raw(raw_path, clean_path):
     loss1 = diff_loss(loss1)
     df = pd.DataFrame({'th': th1, 'delay': delay1, 'loss':loss1})
     df.to_csv(clean_path,index=False)
+    if upload:
+        print("upload to aws db")
+        put_item(exp_id,lid,th1,delay1,loss1)
+        print("finished uploading")
     return
 
 if __name__=="__main__":
