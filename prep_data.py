@@ -74,7 +74,7 @@ def prep_txt(raw_path, clean_path,lid,upload=False):
     df.to_csv(clean_path, index=False)
     if upload:
         print("upload to aws db")
-        put_item(exp_id,lid,ths,delays,losss)
+        put_item(exp_id,lid,df)
         print("finished uploading")
     return
 
@@ -88,7 +88,7 @@ def prep_raw(raw_path, clean_path,lid, upload=False):
     df.to_csv(clean_path,index=False)
     if upload:
         print("upload to aws db")
-        put_item(exp_id,lid,th1,delay1,loss1)
+        put_item(exp_id,lid,df)
         print("finished uploading")
     return
 
