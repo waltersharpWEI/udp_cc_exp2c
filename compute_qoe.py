@@ -15,7 +15,7 @@ def qos_qoe(th,delay,loss):
     qoe = th * a + delay * b + loss * c
     return qoe
 
-def compute_qoe(clean_path,qoe_path):
+def compute_qoe_local(clean_path,qoe_path):
     df = pd.read_csv(clean_path)
     qoe = qos_qoe(df['th'],df['delay'],df['loss'])
     df_qoe = pd.DataFrame(qoe,columns=["qoe"])

@@ -1,6 +1,7 @@
 #created by lai wei at 23/08/2021 13:29
 #The enviroment varaiables for runner
 import os
+local=True
 exp_id = 1
 data_root = "data"
 pdf_root = "pdf"
