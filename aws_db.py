@@ -12,8 +12,8 @@ from configs import table_name, is_debug
 #input: the dataframe in standard qos format
 def put_item(eid,lid,df):
     th1 = np.array(df['th'])
-    delay1 = np.array(df['loss'])
-    loss1 = np.array(df['delay'])
+    delay1 = np.array(df['delay'])
+    loss1 = np.array(df['loss'])
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table(table_name)
     try:
