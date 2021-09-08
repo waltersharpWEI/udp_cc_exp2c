@@ -7,7 +7,7 @@ is_debug=False
 #table name
 table_name = 'gcc_qoe_exp_1'
 #the experiment id, each constitutes to all the data for a plot
-exp_id = 2
+exp_id = 3
 #the root path of the data
 data_root = "data"
 #the root path of the output pdf plot

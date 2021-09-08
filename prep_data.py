@@ -51,6 +51,31 @@ def diff_loss(loss):
     diff.append(0)
     return np.array(diff)
 
+def prep_txt_pantheon(raw_path, clean_path,lid,upload=False):
+    losss = []
+    delays = []
+    ths = []
+    with open(raw_path,'r') as f1:
+        for line in f1.readlines():
+            tokens = line.split()
+            loss = 5
+            th = float(tokens[1]) * 1000000 * 0.2
+            th = int(th)
+            delay = int(float(tokens[2])*200)
+            losss.append(loss)
+            delays.append(delay)
+            ths.append(th)
+    delays = np.array(delays)
+    losss = np.array(losss)
+    ths = np.array(ths)
+    df = pd.DataFrame({'th': ths, 'delay': delays, 'loss': losss})
+    df.to_csv(clean_path, index=False)
+    if upload:
+        print("upload to aws db")
+        put_item(exp_id,lid,df)
+        print("finished uploading")
+    return
+
 def prep_txt(raw_path, clean_path,lid,upload=False):
     losss = []
     delays = []
