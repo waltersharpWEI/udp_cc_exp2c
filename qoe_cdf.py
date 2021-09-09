@@ -36,7 +36,6 @@ def plot_qoe_cdf(lid_list,fig_path):
 
     ax.set_xlabel('QoE', fontsize=asize)
     ax.set_ylabel('CDF', fontsize=asize)
-    # ax.set_ylabel('CDF', fontsize=asize)
     ax.set_xlim(4, 11)
     ax.set_ylim(0, 1)
     plt.legend(loc='upper left', fontsize=asize - 10)
